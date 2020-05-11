@@ -1282,22 +1282,42 @@ void tt_sort_range(
   }
 
   timer_start(&timers[TIMER_SORT]);
-  if(start == 0 && end == tt->nnz) {
-    p_counting_sort_hybrid(tt, cmplt);
 
-  /* sort a subtensor */
-  } else {
-    switch(tt->type) {
-    case SPLATT_NMODE:
-      p_tt_quicksort(tt, cmplt, start, end);
-      break;
+    if(tt->nmodes == 3 && true){ // turn counting sort on for 3 tensors, change to false if want original splatt impl.
+        if (cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2){
+            p_counting_sort(tt, 0);
+            p_counting_sort(tt, 1);
+            p_counting_sort(tt, 2);
+        }else if (cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1){
+            p_bucket_counting_sort(tt, cmplt, 1, 2);
+        } else if (cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2){
+                p_counting_sort(tt, 1);
+        } else if(cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+        } else if(cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1){
+            p_counting_sort(tt, 2);
+        }else if(cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+        }
+    } else {
+        if(start == 0 && end == tt->nnz) {
+            p_counting_sort_hybrid(tt, cmplt);
 
-    case SPLATT_3MODE:
-      p_tt_quicksort3(tt, cmplt, start, end);
-      break;
+        /* sort a subtensor */
+        } else {
+            switch(tt->type) {
+            case SPLATT_NMODE:
+            p_tt_quicksort(tt, cmplt, start, end);
+            break;
+
+            case SPLATT_3MODE:
+            p_tt_quicksort3(tt, cmplt, start, end);
+            break;
+            }
+        }
     }
-  }
-
 
   if(dim_perm == NULL) {
     free(cmplt);
