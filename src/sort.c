@@ -1268,52 +1268,32 @@ void tt_sort_range(
   idx_t const start,
   idx_t const end)
 {
-  idx_t * cmplt;
-  if(dim_perm == NULL) {
-    cmplt = (idx_t*) splatt_malloc(tt->nmodes * sizeof(idx_t));
-    cmplt[0] = mode;
-    for(idx_t m=1; m < tt->nmodes; ++m) {
-      cmplt[m] = (mode + m) % tt->nmodes;
-    }
-  } else {
-    cmplt = dim_perm;
-  }
-
-  timer_start(&timers[TIMER_SORT]);
-
-    if(tt->nmodes == 3 && true){ // turn counting sort on for 3 tensors, change to false if want original splatt impl.
-        if (cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2){
-            p_counting_sort(tt, 0);
-            p_counting_sort(tt, 1);
-            p_counting_sort(tt, 2);
-        }else if (cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1){
-            p_bucket_counting_sort(tt, cmplt, 1, 2);
-        } else if (cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2){
-                p_counting_sort(tt, 1);
-        } else if(cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0){
-                p_counting_sort(tt, 2);
-                p_counting_sort(tt, 1);
-        } else if(cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1){
-            p_counting_sort(tt, 2);
-        }else if(cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0){
-                p_counting_sort(tt, 1);
-                p_counting_sort(tt, 2);
+    idx_t * cmplt;
+    if(dim_perm == NULL) {
+        cmplt = (idx_t*) splatt_malloc(tt->nmodes * sizeof(idx_t));
+        cmplt[0] = mode;
+        for(idx_t m=1; m < tt->nmodes; ++m) {
+            cmplt[m] = (mode + m) % tt->nmodes;
         }
     } else {
-        if(start == 0 && end == tt->nnz) {
-            p_counting_sort_hybrid(tt, cmplt);
+        cmplt = dim_perm;
+    }
 
-        /* sort a subtensor */
-        } else {
-            switch(tt->type) {
-            case SPLATT_NMODE:
-            p_tt_quicksort(tt, cmplt, start, end);
-            break;
+    timer_start(&timers[TIMER_SORT]);
 
-            case SPLATT_3MODE:
-            p_tt_quicksort3(tt, cmplt, start, end);
-            break;
-            }
+    if(start == 0 && end == tt->nnz) {
+        p_counting_sort_hybrid(tt, cmplt);
+
+    /* sort a subtensor */
+    } else {
+        switch(tt->type) {
+        case SPLATT_NMODE:
+        p_tt_quicksort(tt, cmplt, start, end);
+        break;
+
+        case SPLATT_3MODE:
+        p_tt_quicksort3(tt, cmplt, start, end);
+        break;
         }
     }
 
@@ -1322,6 +1302,118 @@ void tt_sort_range(
   }
   timer_stop(&timers[TIMER_SORT]);
 }
+
+void tt_sort_ksadilla(
+  sptensor_t * const tt,
+  idx_t const mode,
+  idx_t * dim_perm,
+  enum SortType typ,
+  idx_t k)
+{
+    switch(typ){
+        case Splatt:
+            tt_sort_range(tt, mode, dim_perm, 0, tt->nnz);
+            break;
+        case KSadilla:
+            tt_sort_range_ksadilla(tt, mode, dim_perm, 0, tt->nnz, k);
+            break;
+        case Radix:
+            tt_sort_range_radix(tt, mode, dim_perm, 0, tt->nnz);
+            break;
+    }
+}
+
+
+void tt_sort_range_ksadilla(
+    sptensor_t * const tt,
+    idx_t const mode,
+    idx_t * dim_perm,
+    idx_t const start,
+    idx_t const end,
+    idx_t k)
+{
+    idx_t * cmplt;
+    if(dim_perm == NULL) {
+        cmplt = (idx_t*) splatt_malloc(tt->nmodes * sizeof(idx_t));
+        cmplt[0] = mode;
+        for(idx_t m=1; m < tt->nmodes; ++m) {
+        cmplt[m] = (mode + m) % tt->nmodes;
+        }
+    } else {
+        cmplt = dim_perm;
+    }
+
+    timer_start(&timers[TIMER_SORT]);
+    if(k == 0){ // 0 is just a quicksort
+        p_tt_quicksort(tt, cmplt, start, end);
+    }
+    else if(k == tt->nmodes){ // Full Ksadilla
+        if(tt->nmodes == 3){
+            if (cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2){
+            }else if (cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+            } else if (cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2){
+                    p_counting_sort(tt, 1);
+            } else if(cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0){
+                    p_counting_sort(tt, 2);
+                    p_counting_sort(tt, 1);
+            } else if(cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1){
+                p_counting_sort(tt, 2);
+            }else if(cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0){
+                    p_counting_sort(tt, 1);
+                    p_counting_sort(tt, 2);
+            }
+        }else if(tt->nmodes == 4){
+            // TODO(suzmue): add calls to appropriate functions
+        }else if(tt->nmodes == 5){
+            // TODO(suzmue): add calls to appropriate functions
+        }
+    }
+    else { // Somewhere in the middle
+        if(k == 1 && cmplt[0] != 0){ // This is just splatt
+            tt_sort_range(tt, mode, dim_perm, start, end);
+        }else {
+            // Find buckets and sort.
+            // TODO: Do different permutations.
+        }
+    }
+
+  if(dim_perm == NULL) {
+    free(cmplt);
+  }
+  timer_stop(&timers[TIMER_SORT]);
+}
+
+void tt_sort_range_radix(
+  sptensor_t * const tt,
+  idx_t const mode,
+  idx_t * dim_perm,
+  idx_t const start,
+  idx_t const end)
+{
+    idx_t * cmplt;
+    if(dim_perm == NULL) {
+        cmplt = (idx_t*) splatt_malloc(tt->nmodes * sizeof(idx_t));
+        cmplt[0] = mode;
+        for(idx_t m=1; m < tt->nmodes; ++m) {
+        cmplt[m] = (mode + m) % tt->nmodes;
+        }
+    } else {
+        cmplt = dim_perm;
+    }
+
+    timer_start(&timers[TIMER_SORT]);
+
+    for(idx_t j = tt->nmodes - 1; j >= 0; j ++){
+        p_counting_sort(tt, cmplt[j]);
+    }
+
+    if(dim_perm == NULL) {
+        free(cmplt);
+    }
+    timer_stop(&timers[TIMER_SORT]);
+}
+
 
 
 void insertion_sort(
