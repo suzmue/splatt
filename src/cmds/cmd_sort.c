@@ -411,7 +411,7 @@ int splatt_sort(
 	
     	tt_sort_ksadilla(tt, m, perms3[args.perm], KSadilla, 3);
     	double t = timers[TIMER_SORT].seconds;
-        printf("%s | %s | splatt | splatt | splatt", args.ifname, perms_names3[args.perm]);
+        printf("%s | %s | 3-sadilla | 3-sadilla | 3-sadilla", args.ifname, perms_names3[args.perm]);
     	printf(" | %.17g ", t*1000); 
     	printf("\n");
     }
@@ -425,7 +425,7 @@ int splatt_sort(
     	idx_t m = perms4[args.perm];
     	tt_sort_ksadilla(tt, m, perms4[args.perm], KSadilla, 4);
     	double t = timers[TIMER_SORT].seconds;
-        printf("%s | %s | splatt | splatt | splatt", args.ifname, perms_names4[args.perm]);
+        printf("%s | %s | 4-sadilla | 4-sadilla | 4-sadilla", args.ifname, perms_names4[args.perm]);
     	printf(" | %0.17g ", t*1000); 
     	printf("\n");
 	}
@@ -439,7 +439,7 @@ int splatt_sort(
     	idx_t m = perms5[args.perm];
     	tt_sort_ksadilla(tt, m, perms5[args.perm], Radix, -1);
     	double t = timers[TIMER_SORT].seconds;
-        printf("%s | %s | splatt | splatt | splatt", args.ifname, perms_names5[args.perm]);
+        printf("%s | %s | 5-sadilla | 5-sadilla | 5-sadilla", args.ifname, perms_names5[args.perm]);
     	printf(" | %0.17g ", t*1000); 
     	printf("\n");
 	}
