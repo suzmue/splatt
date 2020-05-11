@@ -108,7 +108,7 @@ int main(
 #endif
 
   timer_stop(&timers[TIMER_ALL]);
-  if(rank == 0) {
+  if(rank == 0 && false) {
     report_times();
     printf("****************************************************************\n");
   }
