@@ -41,6 +41,12 @@ to see additional build options. To install,
 will suffice. The installation prefix can be chosen by adding a
 '--prefix=DIR' flag to configure.
 
+If there are OpenMP errors when building on a mac set variables before running 'configure':
+export CC=/usr/local/opt/llvm/bin/clang
+export CXX=/usr/local/opt/llvm/bin/clang++
+export LDFLAGS="-L/usr/local/opt/llvm/lib"
+export CPPFLAGS="-I/usr/local/opt/llvm/include"
+
 
 Executable
 ----------
