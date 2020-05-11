@@ -1022,9 +1022,7 @@ static void p_bucket_counting_sort(
     idx_t m
     )
 {
-  
-  idx_t nslices = tt->dims[m];
-     idx_t* perm = splatt_malloc(tt->nnz * sizeof(*perm));
+    idx_t nslices = tt->dims[m];
     tt->ind[tt->nmodes] = splatt_malloc(tt->nnz * sizeof(**tt->ind));
     tt->ind[tt->nmodes][0] = 1;
      idx_t * new_ind[MAX_NMODES];
@@ -1034,7 +1032,7 @@ static void p_bucket_counting_sort(
     val_t * new_vals = splatt_malloc(tt->nnz * sizeof(*new_vals));
 
 
-  idx_t * histogram_array = splatt_malloc(
+     idx_t * histogram_array = splatt_malloc(
       (nslices * splatt_omp_get_max_threads() + 1) * sizeof(*histogram_array));
 
     idx_t *histogram_array2 = splatt_malloc(
@@ -1062,7 +1060,7 @@ static void p_bucket_counting_sort(
         if (j == 0){
             totals[tid] ++;
             tt->ind[tt->nmodes][j] = 1;
-            j ++;
+            continue;
         }
 
         idx_t diff = 0;
@@ -1079,7 +1077,6 @@ static void p_bucket_counting_sort(
         }else{
              tt->ind[tt->nmodes][j] = 0;
         }
-        j++;
     }
 
     #pragma omp barrier
