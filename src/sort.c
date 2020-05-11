@@ -1058,13 +1058,13 @@ static void p_bucket_counting_sort(
     idx_t jend = SS_MIN(jbegin + j_per_thread, tt->nnz);
 
     // Save the buckets
-    idx_t j = jbegin;
-    if (j == 0){
-        totals[tid] ++;
-        tt->ind[tt->nmodes][j] = 1;
-        j ++;
-    }
-    while(j < jend){
+    for(idx_t j = jbegin; j < jend; j ++){
+        if (j == 0){
+            totals[tid] ++;
+            tt->ind[tt->nmodes][j] = 1;
+            j ++;
+        }
+
         idx_t diff = 0;
         for(idx_t idx = 0; idx < bucket_size; idx++) {
             idx_t mi = cmplt[idx];
