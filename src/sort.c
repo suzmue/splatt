@@ -1081,8 +1081,6 @@ static void p_bucket_counting_sort(
         }
         j++;
     }
-        #pragma omp barrier
-
 
     #pragma omp barrier
 
