@@ -20,6 +20,7 @@ static struct argp_option perm_options[] = {
     { "perm", 'p', "PERM", 0, "Desired permutation" },
     { "typ", 't', "TYPE", 0, "Desired type of sort" },
     { "k", 'k', "K", 0, "K for K-sadilla sort" },
+    { "check", 'c', "CHECK", 0, "Whether to check correctness of sort (0 or 1)"},
     { "outfile", 'o', "FILE", 0, "write reordered tensor to file" },
     { 0, 0, 0, 0, "Mode-dependent options:", 1},
     { 0 }
@@ -33,6 +34,7 @@ typedef struct
   idx_t order;
   idx_t typ;
   idx_t k;
+  idx_t check;
   idx_t *dim_perm;
   splatt_perm_type type;
   idx_t mode;
@@ -51,6 +53,9 @@ static error_t parse_perm_opt(
 
   case 'd':
     args->order = atoi(arg);
+    break;
+  case 'c':
+    args->check = atoi(arg);
     break;
 
   case 't':
@@ -89,6 +94,7 @@ int splatt_sort(
     args.ofname = NULL;
     args.perm = 0;
     args.order = 0;
+    args.check = 0;
     args.typ = 0;
     args.k = 0;
     idx_t *orig3 = (idx_t[3]){0,1,2};
@@ -440,6 +446,20 @@ int splatt_sort(
         printf("%s | %s | %s | %s | %s", args.ifname, perms_names3[args.perm],sort_names[args.typ + args.k],sort_names[args.typ + args.k],sort_names[args.typ + args.k]);
     	printf(" | %.17g ", t*1000); 
     	printf("\n");
+
+        if(args.check){
+            val_t *sorted = splatt_malloc(tt->nnz * sizeof(*sorted));
+            memcpy(sorted, tt->vals, tt->nnz * sizeof(val_t));
+            tt_sort(tt, m, perms3[args.perm]); // Sort using splatt
+            for(idx_t i = 0; i < tt->nnz; i ++){
+                if(sorted[i] != tt->vals[i]){
+                    printf("ERROR\n");
+                    exit(0);
+                }
+            }
+            printf("Correct!\n");
+        }
+
     }
   }
 
@@ -454,6 +474,19 @@ int splatt_sort(
         printf("%s | %s | %s | %s | %s", args.ifname, perms_names4[args.perm], sort_names[args.typ + args.k], sort_names[args.typ + args.k], sort_names[args.typ + args.k]);
     	printf(" | %0.17g ", t*1000); 
     	printf("\n");
+
+        if(args.check){
+            val_t *sorted = splatt_malloc(tt->nnz * sizeof(*sorted));
+            memcpy(sorted, tt->vals, tt->nnz * sizeof(val_t));
+            tt_sort(tt, m, perms4[args.perm]); // Sort using splatt
+            for(idx_t i = 0; i < tt->nnz; i ++){
+                if(sorted[i] != tt->vals[i]){
+                    printf("ERROR\n");
+                    exit(0);
+                }
+            }
+            printf("Correct!\n");
+        }
 	}
   }
   
@@ -468,6 +501,19 @@ int splatt_sort(
         printf("%s | %s | %s | %s | %s", args.ifname, perms_names5[args.perm],sort_names[args.typ + args.k],sort_names[args.typ + args.k],sort_names[args.typ + args.k]);
     	printf(" | %0.17g ", t*1000); 
     	printf("\n");
+
+        if(args.check){
+            val_t *sorted = splatt_malloc(tt->nnz * sizeof(*sorted));
+            memcpy(sorted, tt->vals, tt->nnz * sizeof(val_t));
+            tt_sort(tt, m, perms5[args.perm]); // Sort using splatt
+            for(idx_t i = 0; i < tt->nnz; i ++){
+                if(sorted[i] != tt->vals[i]){
+                    printf("ERROR\n");
+                    exit(0);
+                }
+            }
+            printf("Correct!\n");
+        }
 	}
   }
 
