@@ -1280,7 +1280,6 @@ void tt_sort_range(
 
     if(start == 0 && end == tt->nnz) {
         p_counting_sort_hybrid(tt, cmplt);
-
     /* sort a subtensor */
     } else {
         switch(tt->type) {
@@ -1401,10 +1400,10 @@ void tt_sort_range_radix(
 
     timer_start(&timers[TIMER_SORT]);
 
-    for(idx_t j = tt->nmodes - 1; j >= 0; j ++){
+    for(int j = tt->nmodes - 1; j >= 0; j--){
         p_counting_sort(tt, cmplt[j]);
     }
-
+    
     if(dim_perm == NULL) {
         free(cmplt);
     }
