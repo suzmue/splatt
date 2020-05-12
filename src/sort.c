@@ -905,6 +905,94 @@ static void p_counting_sort_hybrid(
 }
 
 /**
+* @brief Perform a counting sort on the most significant mode (cmplt[0]) and
+*        then parallel quicksorts on each of slices.
+*
+* @param tt The tensor to sort.
+* @param cmplt Mode permutation used for defining tie-breaking order.
+* @param bucket_size The number of top buckets that are already sorted.
+*/
+static void p_quicksort_bottom(
+    sptensor_t * const tt,
+    idx_t * const cmplt,
+    idx_t bucket_size)
+{
+    idx_t m = cmplt[0];
+    idx_t nslices = tt->dims[m];
+
+    idx_t * pos = splatt_malloc(tt->nnz * sizeof(*pos));
+    idx_t * totals = splatt_malloc(splatt_omp_get_max_threads() * sizeof(*totals));
+    memset(totals, 0, sizeof(splatt_omp_get_max_threads() * (*totals)));
+
+  #pragma omp parallel
+  {
+    int nthreads = splatt_omp_get_num_threads();
+    int tid = splatt_omp_get_thread_num();
+
+    idx_t j_per_thread = (tt->nnz + nthreads - 1)/nthreads;
+    idx_t jbegin = SS_MIN(j_per_thread*tid, tt->nnz);
+    idx_t jend = SS_MIN(jbegin + j_per_thread, tt->nnz);
+    
+    // Save the buckets
+    idx_t curr = jbegin;
+    for(idx_t j = jbegin; j < jend; j ++){
+        if (j == 0){
+            totals[tid] ++;
+            pos[0] = 0;
+            continue;
+        }
+
+        idx_t diff = 0;
+        for(idx_t idx = 0; idx < bucket_size; idx++) {
+            idx_t mi = cmplt[idx];
+            if(tt->ind[mi][j] != tt->ind[mi][j-1]){
+                diff ++;
+                break;
+            }
+        }
+        if(diff > 0){
+            // Put the start of a bucket into the position array.
+            totals[tid]++;
+            pos[curr] = j; 
+            curr++;
+        }
+    }
+
+    if(tid == nthreads - 1){
+        totals[tid]++;
+        pos[curr] = tt->nnz;
+    }
+  } /* omp parallel */
+  pos[nslices] = tt->nnz;
+
+    /* shift cmplt left one time, then do normal quicksort */
+    for(int i = 0; i < bucket_size; i ++){
+        idx_t saved = cmplt[0];
+        memmove(cmplt, cmplt+1, (tt->nmodes - 1) * sizeof(*cmplt));
+        cmplt[tt->nmodes-1] = saved;
+    }
+
+    #pragma omp parallel for schedule(dynamic)
+    for(idx_t i = 0; i < nslices; ++i) {
+      p_tt_quicksort(tt, cmplt, pos[i], pos[i + 1]);
+      for(idx_t j = pos[i]; j < pos[i + 1]; ++j) {
+        tt->ind[m][j] = i;
+      }
+    }
+
+    /* undo cmplt changes */
+    for(int i = 0; i < bucket_size; i ++){
+        idx_t saved = cmplt[tt->nmodes-1];
+        memmove(cmplt+1, cmplt, (tt->nmodes - 1) * sizeof(*cmplt));
+        cmplt[0] = saved;
+    }
+
+
+  splatt_free(pos);
+  splatt_free(totals);
+}
+
+/**
 * @brief Perform a stable counting sort on mode m.
 *
 * @param tt The tensor to sort.
@@ -1366,11 +1454,45 @@ void tt_sort_range_ksadilla(
         }
     }
     else { // Somewhere in the middle
-        if(k == 1 && cmplt[0] != 0){ // This is just splatt
-            tt_sort_range(tt, mode, dim_perm, start, end);
-        }else {
-            // Find buckets and sort.
-            // TODO: Do different permutations.
+        if(k == 1){
+            if(cmplt[0] != 0){ // This is just splatt
+                tt_sort_range(tt, mode, dim_perm, start, end);
+            }else{
+                p_quicksort_bottom(tt, cmplt, 1);
+            }
+        }else{
+            if(tt->nmodes == 3 && k == 2){
+                // Find buckets and sort.
+                // Note this strategy is useless. The last mode never needs to be sorted.
+                if (cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2){
+                    // Nothing needs to be done.
+                    p_quicksort_bottom(tt, cmplt, k);
+                }else if (cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1){
+                    p_bucket_counting_sort(tt, cmplt, 1, 2);
+                    p_quicksort_bottom(tt, cmplt, k);
+                } else if (cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2){
+                    p_counting_sort(tt, 1);
+                    p_quicksort_bottom(tt, cmplt, k);
+                } else if(cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0){
+                    p_counting_sort(tt, 2);
+                    p_counting_sort(tt, 1);
+                    p_quicksort_bottom(tt, cmplt, k);
+                } else if(cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1){
+                    p_counting_sort(tt, 2);
+                    p_quicksort_bottom(tt, cmplt, k);
+                }else if(cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0){
+                    p_counting_sort(tt, 1);
+                    p_counting_sort(tt, 2);
+                    p_quicksort_bottom(tt, cmplt, k);
+                }
+
+                // TODO: Do different permutations.
+            }else if(tt->nmodes == 4){
+                // TODO(suzmue): add calls to appropriate functions
+            }else if(tt->nmodes == 5){
+                // TODO(suzmue): add calls to appropriate functions
+            }
+
         }
     }
 
@@ -1403,7 +1525,7 @@ void tt_sort_range_radix(
     for(int j = tt->nmodes - 1; j >= 0; j--){
         p_counting_sort(tt, cmplt[j]);
     }
-    
+
     if(dim_perm == NULL) {
         free(cmplt);
     }
