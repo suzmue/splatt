@@ -1431,69 +1431,3368 @@ void tt_sort_range_ksadilla(
     if(k == 0){ // 0 is just a quicksort
         p_tt_quicksort(tt, cmplt, start, end);
     }
-    else if(k == tt->nmodes){ // Full Ksadilla
-        if(tt->nmodes == 3){
-            if (cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2){
-            }else if (cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1){
-                p_bucket_counting_sort(tt, cmplt, 1, 2);
-            } else if (cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2){
-                    p_counting_sort(tt, 1);
-            } else if(cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0){
-                    p_counting_sort(tt, 2);
-                    p_counting_sort(tt, 1);
-            } else if(cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1){
-                p_counting_sort(tt, 2);
-            }else if(cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0){
-                    p_counting_sort(tt, 1);
-                    p_counting_sort(tt, 2);
-            }
-        }else if(tt->nmodes == 4){
-            // TODO(suzmue): add calls to appropriate functions
-        }else if(tt->nmodes == 5){
-            // TODO(suzmue): add calls to appropriate functions
-        }
-    }
     else { // Somewhere in the middle
-        if(k == 1){
-            if(cmplt[0] != 0){ // This is just splatt
-                tt_sort_range(tt, mode, dim_perm, start, end);
-            }else{
-                p_quicksort_bottom(tt, cmplt, 1);
+        if(tt->nmodes == 3){
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2){
+                p_quicksort_bottom(tt, cmplt, k);
             }
-        }else{
-            if(tt->nmodes == 3 && k == 2){
-                // Find buckets and sort.
-                // Note this strategy is useless. The last mode never needs to be sorted.
-                if (cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2){
-                    // Nothing needs to be done.
-                    p_quicksort_bottom(tt, cmplt, k);
-                }else if (cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1){
-                    p_bucket_counting_sort(tt, cmplt, 1, 2);
-                    p_quicksort_bottom(tt, cmplt, k);
-                } else if (cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2){
-                    p_counting_sort(tt, 1);
-                    p_quicksort_bottom(tt, cmplt, k);
-                } else if(cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0){
-                    p_counting_sort(tt, 2);
-                    p_counting_sort(tt, 1);
-                    p_quicksort_bottom(tt, cmplt, k);
-                } else if(cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1){
-                    p_counting_sort(tt, 2);
-                    p_quicksort_bottom(tt, cmplt, k);
-                }else if(cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0){
-                    p_counting_sort(tt, 1);
-                    p_counting_sort(tt, 2);
-                    p_quicksort_bottom(tt, cmplt, k);
-                }
-
-                // TODO: Do different permutations.
-            }else if(tt->nmodes == 4){
-                // TODO(suzmue): add calls to appropriate functions
-            }else if(tt->nmodes == 5){
-                // TODO(suzmue): add calls to appropriate functions
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2){
+                p_quicksort_bottom(tt, cmplt, k);
             }
-
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2){
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2){
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1){
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+            }
         }
+        if(tt->nmodes == 4){
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 3){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 3){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 3){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 3){
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 2){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 2){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 2){
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 2){
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 3){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 3){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 3){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 3){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 1){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 2){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 2){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 2){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 2){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 1){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 3){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 3){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 3){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 3){
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 2){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 2){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 2){
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 2){
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 3){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 3){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 3){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 3){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 0){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 2){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 2){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 2){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 2){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 0){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 3){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 3){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 3){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 3){
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 1){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 1){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 1){
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 1){
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 3){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 3){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 3){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 3){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 0){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 1){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 1){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 1){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 1){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 0){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 2){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 2){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 2){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 2){
+                p_counting_sort(tt, 3);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 1){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 1){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 1){
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 1){
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 2);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 2){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 2){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 2){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 2){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 0){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 1){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 1){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 1){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 1){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 0){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+            }
+        }
+        if(tt->nmodes == 5){
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 4){
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_bucket_counting_sort(tt, cmplt, 3, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_bucket_counting_sort(tt, cmplt, 3, 3);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+            }
+            if(k == 1 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 0 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_bucket_counting_sort(tt, cmplt, 1, 2);
+                p_bucket_counting_sort(tt, cmplt, 1, 3);
+                p_bucket_counting_sort(tt, cmplt, 1, 4);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 3, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_bucket_counting_sort(tt, cmplt, 3, 3);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 1 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 3 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 3, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_bucket_counting_sort(tt, cmplt, 3, 3);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 2 && cmplt[1] == 4 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 2);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_bucket_counting_sort(tt, cmplt, 2, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_bucket_counting_sort(tt, cmplt, 2, 2);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 2);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 0 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 2);
+                p_bucket_counting_sort(tt, cmplt, 2, 4);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 1 && cmplt[2] == 4 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 4 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 3, 4);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 4){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 4 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 2 && cmplt[2] == 4 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 3, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_bucket_counting_sort(tt, cmplt, 3, 2);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+            }
+            if(k == 1 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 3 && cmplt[1] == 4 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_counting_sort(tt, 3);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_bucket_counting_sort(tt, cmplt, 3, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_bucket_counting_sort(tt, cmplt, 3, 3);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_bucket_counting_sort(tt, cmplt, 2, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_bucket_counting_sort(tt, cmplt, 2, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_bucket_counting_sort(tt, cmplt, 2, 2);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_bucket_counting_sort(tt, cmplt, 2, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_bucket_counting_sort(tt, cmplt, 2, 2);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_bucket_counting_sort(tt, cmplt, 2, 2);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 0 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_bucket_counting_sort(tt, cmplt, 2, 2);
+                p_bucket_counting_sort(tt, cmplt, 2, 3);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_bucket_counting_sort(tt, cmplt, 3, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_bucket_counting_sort(tt, cmplt, 3, 3);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 2 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 1 && cmplt[2] == 3 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 4);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_bucket_counting_sort(tt, cmplt, 3, 3);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 0 && cmplt[3] == 3 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_bucket_counting_sort(tt, cmplt, 3, 3);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 3){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 1 && cmplt[3] == 3 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 2 && cmplt[2] == 3 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 4);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 1 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_bucket_counting_sort(tt, cmplt, 3, 2);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 0 && cmplt[3] == 2 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_bucket_counting_sort(tt, cmplt, 3, 2);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 0 && cmplt[4] == 2){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 1 && cmplt[3] == 2 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 0 && cmplt[4] == 1){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+            }
+            if(k == 1 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 2 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 3 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 4 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+                p_quicksort_bottom(tt, cmplt, k);
+            }
+            if(k == 5 && cmplt[0] == 4 && cmplt[1] == 3 && cmplt[2] == 2 && cmplt[3] == 1 && cmplt[4] == 0){
+                p_counting_sort(tt, 1);
+                p_counting_sort(tt, 2);
+                p_counting_sort(tt, 3);
+                p_counting_sort(tt, 4);
+            }
+        }
+
     }
 
   if(dim_perm == NULL) {
