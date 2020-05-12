@@ -104,7 +104,7 @@ void quicksort_perm(
   idx_t * const restrict perm,
   idx_t const n);
 
-enum SortType {KSadilla, Radix, Splatt};
+enum SortType {Radix, Splatt, KSadilla};
 
 #define tt_sort_ksadilla splatt_tt_sort_ksadilla
 /**

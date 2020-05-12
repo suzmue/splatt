@@ -17,10 +17,12 @@ static char perm_doc[] =
   "splatt-sort -- Reording the modes of a sparse tensor.\n\n";
 
 static struct argp_option perm_options[] = {
-  { "perm", 'p', "PERM", 0, "Desired permutation" },
-  { "outfile", 'o', "FILE", 0, "write reordered tensor to file" },
-  { 0, 0, 0, 0, "Mode-dependent options:", 1},
-  { 0 }
+    { "perm", 'p', "PERM", 0, "Desired permutation" },
+    { "typ", 't', "TYPE", 0, "Desired type of sort" },
+    { "k", 'k', "K", 0, "K for K-sadilla sort" },
+    { "outfile", 'o', "FILE", 0, "write reordered tensor to file" },
+    { 0, 0, 0, 0, "Mode-dependent options:", 1},
+    { 0 }
 };
 
 typedef struct
@@ -29,6 +31,8 @@ typedef struct
   char * ofname;
   idx_t perm;
   idx_t order;
+  idx_t typ;
+  idx_t k;
   idx_t *dim_perm;
   splatt_perm_type type;
   idx_t mode;
@@ -47,6 +51,14 @@ static error_t parse_perm_opt(
 
   case 'd':
     args->order = atoi(arg);
+    break;
+
+  case 't':
+    args->typ = atoi(arg);
+    break;
+
+  case 'k':
+    args->k = atoi(arg);
     break;
 
   case ARGP_KEY_ARG:
@@ -77,6 +89,8 @@ int splatt_sort(
     args.ofname = NULL;
     args.perm = 0;
     args.order = 0;
+    args.typ = 0;
+    args.k = 0;
     idx_t *orig3 = (idx_t[3]){0,1,2};
     idx_t perms3[6][3] = {
         {0,1,2},
@@ -393,6 +407,18 @@ int splatt_sort(
         "43210",
     };
 
+    char sort_names[7][10] = {
+        "radix    ",
+        "splatt   ",
+        "qsort    ",
+        "1-sadilla",
+        "2-sadilla",
+        "3-sadilla",
+        "4-sadilla",
+        "5-sadilla"
+    };
+
+
     argp_parse(&perm_argp, argc, argv, ARGP_IN_ORDER, 0, &args);
     sptensor_t * tt = tt_read(args.ifname);
     if(tt == NULL) {
@@ -409,9 +435,9 @@ int splatt_sort(
     	init_timers();
     	idx_t m = perms3[args.perm];
 	
-    	tt_sort_ksadilla(tt, m, perms3[args.perm], KSadilla, 3);
+    	tt_sort_ksadilla(tt, m, perms3[args.perm], args.typ, 3);
     	double t = timers[TIMER_SORT].seconds;
-        printf("%s | %s | 3-sadilla | 3-sadilla | 3-sadilla", args.ifname, perms_names3[args.perm]);
+        printf("%s | %s | %s | %s | %s", args.ifname, perms_names3[args.perm],sort_names[args.typ + args.k],sort_names[args.typ + args.k],sort_names[args.typ + args.k]);
     	printf(" | %.17g ", t*1000); 
     	printf("\n");
     }
@@ -423,9 +449,9 @@ int splatt_sort(
     	/* perform permutation */
     	init_timers();
     	idx_t m = perms4[args.perm];
-    	tt_sort_ksadilla(tt, m, perms4[args.perm], KSadilla, 4);
+    	tt_sort_ksadilla(tt, m, perms4[args.perm], args.typ, 4);
     	double t = timers[TIMER_SORT].seconds;
-        printf("%s | %s | 4-sadilla | 4-sadilla | 4-sadilla", args.ifname, perms_names4[args.perm]);
+        printf("%s | %s | %s | %s | %s", args.ifname, perms_names4[args.perm], sort_names[args.typ + args.k], sort_names[args.typ + args.k], sort_names[args.typ + args.k]);
     	printf(" | %0.17g ", t*1000); 
     	printf("\n");
 	}
@@ -437,9 +463,9 @@ int splatt_sort(
     	/* perform permutation */
     	init_timers();
     	idx_t m = perms5[args.perm];
-    	tt_sort_ksadilla(tt, m, perms5[args.perm], Radix, -1);
+    	tt_sort_ksadilla(tt, m, perms5[args.perm], args.typ, -1);
     	double t = timers[TIMER_SORT].seconds;
-        printf("%s | %s | 5-sadilla | 5-sadilla | 5-sadilla", args.ifname, perms_names5[args.perm]);
+        printf("%s | %s | %s | %s | %s", args.ifname, perms_names5[args.perm],sort_names[args.typ + args.k],sort_names[args.typ + args.k],sort_names[args.typ + args.k]);
     	printf(" | %0.17g ", t*1000); 
     	printf("\n");
 	}
