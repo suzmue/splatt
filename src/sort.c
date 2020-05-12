@@ -1330,6 +1330,7 @@ static void p_bucket_counting_sort(
 
     splatt_free(histogram_array);
     splatt_free(histogram_array2);
+    splatt_free(totals);
 
 }
 
