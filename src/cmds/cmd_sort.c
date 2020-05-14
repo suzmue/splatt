@@ -413,7 +413,7 @@ int splatt_sort(
         "43210",
     };
 
-    char sort_names[7][10] = {
+    char sort_names[8][10] = {
         "radix    ",
         "splatt   ",
         "qsort    ",
@@ -441,7 +441,7 @@ int splatt_sort(
     	init_timers();
     	idx_t m = perms3[args.perm];
 	
-    	tt_sort_ksadilla(tt, m, perms3[args.perm], args.typ, 3);
+    	tt_sort_ksadilla(tt, m, perms3[args.perm], args.typ, args.k);
     	double t = timers[TIMER_SORT].seconds;
         printf("%s | %s | %s | %s | %s", args.ifname, perms_names3[args.perm],sort_names[args.typ + args.k],sort_names[args.typ + args.k],sort_names[args.typ + args.k]);
     	printf(" | %.17g ", t*1000); 
@@ -451,8 +451,8 @@ int splatt_sort(
             val_t *sorted = splatt_malloc(tt->nnz * sizeof(*sorted));
             memcpy(sorted, tt->vals, tt->nnz * sizeof(val_t));
             tt_sort(tt, m, perms3[args.perm]); // Sort using splatt
-            for(idx_t i = 0; i < tt->nnz; i ++){
-                if(sorted[i] != tt->vals[i]){
+            for(idx_t j = 0; j < tt->nnz; j ++){
+                if(sorted[j] != tt->vals[j]){
                     printf("ERROR\n");
                     exit(0);
                 }
@@ -469,7 +469,7 @@ int splatt_sort(
     	/* perform permutation */
     	init_timers();
     	idx_t m = perms4[args.perm];
-    	tt_sort_ksadilla(tt, m, perms4[args.perm], args.typ, 4);
+    	tt_sort_ksadilla(tt, m, perms4[args.perm], args.typ, args.k);
     	double t = timers[TIMER_SORT].seconds;
         printf("%s | %s | %s | %s | %s", args.ifname, perms_names4[args.perm], sort_names[args.typ + args.k], sort_names[args.typ + args.k], sort_names[args.typ + args.k]);
     	printf(" | %0.17g ", t*1000); 
@@ -479,8 +479,8 @@ int splatt_sort(
             val_t *sorted = splatt_malloc(tt->nnz * sizeof(*sorted));
             memcpy(sorted, tt->vals, tt->nnz * sizeof(val_t));
             tt_sort(tt, m, perms4[args.perm]); // Sort using splatt
-            for(idx_t i = 0; i < tt->nnz; i ++){
-                if(sorted[i] != tt->vals[i]){
+            for(idx_t j = 0; j < tt->nnz; j ++){
+                if(sorted[j] != tt->vals[j]){
                     printf("ERROR\n");
                     exit(0);
                 }
@@ -496,7 +496,7 @@ int splatt_sort(
     	/* perform permutation */
     	init_timers();
     	idx_t m = perms5[args.perm];
-    	tt_sort_ksadilla(tt, m, perms5[args.perm], args.typ, -1);
+    	tt_sort_ksadilla(tt, m, perms5[args.perm], args.typ, args.k);
     	double t = timers[TIMER_SORT].seconds;
         printf("%s | %s | %s | %s | %s", args.ifname, perms_names5[args.perm],sort_names[args.typ + args.k],sort_names[args.typ + args.k],sort_names[args.typ + args.k]);
     	printf(" | %0.17g ", t*1000); 
@@ -506,8 +506,8 @@ int splatt_sort(
             val_t *sorted = splatt_malloc(tt->nnz * sizeof(*sorted));
             memcpy(sorted, tt->vals, tt->nnz * sizeof(val_t));
             tt_sort(tt, m, perms5[args.perm]); // Sort using splatt
-            for(idx_t i = 0; i < tt->nnz; i ++){
-                if(sorted[i] != tt->vals[i]){
+            for(idx_t j = 0; j < tt->nnz; j ++){
+                if(sorted[j] != tt->vals[j]){
                     printf("ERROR\n");
                     exit(0);
                 }
