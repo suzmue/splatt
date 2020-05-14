@@ -997,8 +997,9 @@ static void p_quicksort_bottom(
     }
 
 
-  splatt_free(pos);
-  splatt_free(totals);
+    splatt_free(pos);
+    splatt_free(pos2);  
+    splatt_free(totals);
 }
 
 /**
