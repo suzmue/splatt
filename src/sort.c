@@ -917,12 +917,12 @@ static void p_quicksort_bottom(
     idx_t * const cmplt,
     idx_t bucket_size)
 {
-    idx_t m = cmplt[0];
-    idx_t nslices = tt->dims[m];
-
-    idx_t * pos = splatt_malloc(tt->nnz * sizeof(*pos));
+    idx_t * pos = splatt_malloc((tt->nnz + 1)* sizeof(*pos));
     idx_t * totals = splatt_malloc(splatt_omp_get_max_threads() * sizeof(*totals));
     memset(totals, 0, sizeof(splatt_omp_get_max_threads() * (*totals)));
+
+    idx_t *ppos = splatt_malloc(splatt_omp_get_max_threads() * 2 *sizeof(*ppos));
+    memset(ppos, 0, splatt_omp_get_max_threads() * 2 *sizeof(*ppos));
 
   #pragma omp parallel
   {
@@ -935,10 +935,11 @@ static void p_quicksort_bottom(
     
     // Save the buckets
     idx_t curr = jbegin;
+    ppos[tid*2] = curr;
     for(idx_t j = jbegin; j < jend; j ++){
         if (j == 0){
-            totals[tid] ++;
             pos[0] = 0;
+            curr++;
             continue;
         }
 
@@ -952,18 +953,29 @@ static void p_quicksort_bottom(
         }
         if(diff > 0){
             // Put the start of a bucket into the position array.
-            totals[tid]++;
             pos[curr] = j; 
             curr++;
         }
     }
 
     if(tid == nthreads - 1){
-        totals[tid]++;
         pos[curr] = tt->nnz;
+        curr ++;
     }
+
+    ppos[tid*2 + 1] = curr;
   } /* omp parallel */
-  pos[nslices] = tt->nnz;
+
+    idx_t size = 0;
+    idx_t *pos2 = splatt_malloc((tt->nnz + 1) * sizeof(*pos2));
+
+    for(idx_t tid = 0; tid < splatt_omp_get_max_threads(); tid ++){
+        idx_t from_start = ppos[tid*2];
+        idx_t from_end = ppos[tid*2 + 1];
+        idx_t dist = from_end - from_start;
+        memcpy(&pos2[size], &pos[from_start], sizeof(*pos2)*(dist));
+        size += dist;
+    }
 
     /* shift cmplt left one time, then do normal quicksort */
     for(int i = 0; i < bucket_size; i ++){
@@ -973,11 +985,8 @@ static void p_quicksort_bottom(
     }
 
     #pragma omp parallel for schedule(dynamic)
-    for(idx_t i = 0; i < nslices; ++i) {
-      p_tt_quicksort(tt, cmplt, pos[i], pos[i + 1]);
-      for(idx_t j = pos[i]; j < pos[i + 1]; ++j) {
-        tt->ind[m][j] = i;
-      }
+    for(idx_t i = 0; i < size-1; i ++){
+        p_tt_quicksort(tt, cmplt, pos2[i], pos2[i + 1]);
     }
 
     /* undo cmplt changes */
