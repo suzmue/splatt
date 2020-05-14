@@ -458,6 +458,7 @@ int splatt_sort(
                 }
             }
             printf("Correct!\n");
+            splatt_free(sorted);
         }
 
     }
@@ -486,6 +487,7 @@ int splatt_sort(
                 }
             }
             printf("Correct!\n");
+            splatt_free(sorted);
         }
 	}
   }
@@ -513,6 +515,7 @@ int splatt_sort(
                 }
             }
             printf("Correct!\n");
+            splatt_free(sorted);
         }
 	}
   }
