@@ -1121,8 +1121,8 @@ static void p_bucket_counting_sort(
     )
 {
     idx_t nslices = tt->dims[m];
-    tt->ind[tt->nmodes] = splatt_malloc(tt->nnz * sizeof(**tt->ind));
-    tt->ind[tt->nmodes][0] = 1;
+    idx_t * secret_ind = splatt_malloc(tt->nnz * sizeof(**tt->ind));
+    secret_ind[0] = 1;
     idx_t * new_ind[MAX_NMODES];
     for(idx_t i = 0; i < tt->nmodes + 1; ++i) {
         new_ind[i] = splatt_malloc(tt->nnz * sizeof(**new_ind));
@@ -1157,7 +1157,7 @@ static void p_bucket_counting_sort(
     for(idx_t j = jbegin; j < jend; j ++){
         if (j == 0){
             totals[tid] ++;
-            tt->ind[tt->nmodes][j] = 1;
+            secret_ind[j] = 1;
             continue;
         }
 
@@ -1171,9 +1171,9 @@ static void p_bucket_counting_sort(
         }
         if(diff > 0){
             totals[tid]++;
-            tt->ind[tt->nmodes][j] = 1;
+            secret_ind[j] = 1;
         }else{
-             tt->ind[tt->nmodes][j] = 0;
+             secret_ind[j] = 0;
         }
     }
 
@@ -1187,9 +1187,9 @@ static void p_bucket_counting_sort(
     for(int t = 0; t < tid; t ++){
         previous += totals[t];
     }
-    tt->ind[tt->nmodes][jbegin] += previous; 
+    secret_ind[jbegin] += previous; 
     for(idx_t j = jbegin + 1; j < jend; ++j) {
-        tt->ind[tt->nmodes][j] += tt->ind[tt->nmodes][j-1];
+        secret_ind[j] += secret_ind[j-1];
     }
 
 
@@ -1254,9 +1254,10 @@ static void p_bucket_counting_sort(
       idx_t offset = histogram[idx];
 
       new_vals[offset] = tt->vals[j];
-      for(idx_t mode=0; mode < tt->nmodes + 1; ++mode) {
+      for(idx_t mode=0; mode < tt->nmodes; ++mode) {
             new_ind[mode][offset] = tt->ind[mode][j];
       }
+      new_ind[tt->nmodes][offset] = secret_ind[j];
     }
 
     #pragma omp barrier
@@ -1334,7 +1335,7 @@ static void p_bucket_counting_sort(
     }
     splatt_free(new_vals);
 
-    splatt_free(tt->ind[tt->nmodes]);
+    splatt_free(secret_ind);
 
 
     splatt_free(histogram_array);
