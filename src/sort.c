@@ -999,6 +999,7 @@ static void p_quicksort_bottom(
 
     splatt_free(pos);
     splatt_free(pos2);  
+    splatt_free(ppos);
     splatt_free(totals);
 }
 
@@ -1329,13 +1330,12 @@ static void p_bucket_counting_sort(
   } /* omp parallel */
 
   
-    for(idx_t i = 0; i < tt->nmodes; ++i) {
+    for(idx_t i = 0; i < tt->nmodes + 1; ++i) {
         splatt_free(new_ind[i]);
     }
-    splatt_free(tt->ind[tt->nmodes]);
     splatt_free(new_ind[tt->nmodes]);
 
-  splatt_free(new_vals);
+    splatt_free(new_vals);
 
 
     splatt_free(histogram_array);
