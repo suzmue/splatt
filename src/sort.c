@@ -984,7 +984,7 @@ static void p_quicksort_bottom(
         cmplt[tt->nmodes-1] = saved;
     }
 
-    #pragma omp parallel for schedule(dynamic)
+    #pragma omp parallel for schedule(guided)
     for(idx_t i = 0; i < size-1; i ++){
         p_tt_quicksort(tt, cmplt, pos2[i], pos2[i + 1]);
     }
@@ -1123,7 +1123,7 @@ static void p_bucket_counting_sort(
     idx_t nslices = tt->dims[m];
     tt->ind[tt->nmodes] = splatt_malloc(tt->nnz * sizeof(**tt->ind));
     tt->ind[tt->nmodes][0] = 1;
-     idx_t * new_ind[MAX_NMODES];
+    idx_t * new_ind[MAX_NMODES];
     for(idx_t i = 0; i < tt->nmodes + 1; ++i) {
         new_ind[i] = splatt_malloc(tt->nnz * sizeof(**new_ind));
     }
@@ -1321,7 +1321,7 @@ static void p_bucket_counting_sort(
 
       idx_t offset = histogram2[idx];
       tt->vals[offset] = new_vals[j];
-      for(idx_t mode=0; mode < tt->nmodes + 1; ++mode) {
+      for(idx_t mode=0; mode < tt->nmodes; ++mode) {
           tt->ind[mode][offset] = new_ind[mode][j];
       }
     }
@@ -1329,7 +1329,7 @@ static void p_bucket_counting_sort(
   } /* omp parallel */
 
   
-    for(idx_t i = 0; i < tt->nmodes ; ++i) {
+    for(idx_t i = 0; i < tt->nmodes; ++i) {
         splatt_free(new_ind[i]);
     }
     splatt_free(tt->ind[tt->nmodes]);
