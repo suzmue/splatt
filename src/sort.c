@@ -918,11 +918,9 @@ static void p_quicksort_bottom(
     idx_t bucket_size)
 {
     idx_t * pos = splatt_malloc((tt->nnz + 1)* sizeof(*pos));
+    idx_t *pos2 = splatt_malloc((tt->nnz + 1) * sizeof(*pos2));
     idx_t * totals = splatt_malloc(splatt_omp_get_max_threads() * sizeof(*totals));
     memset(totals, 0, sizeof(splatt_omp_get_max_threads() * (*totals)));
-
-    idx_t *ppos = splatt_malloc(splatt_omp_get_max_threads() * 2 *sizeof(*ppos));
-    memset(ppos, 0, splatt_omp_get_max_threads() * 2 *sizeof(*ppos));
 
   #pragma omp parallel
   {
@@ -932,10 +930,9 @@ static void p_quicksort_bottom(
     idx_t j_per_thread = (tt->nnz + nthreads - 1)/nthreads;
     idx_t jbegin = SS_MIN(j_per_thread*tid, tt->nnz);
     idx_t jend = SS_MIN(jbegin + j_per_thread, tt->nnz);
-    
+
     // Save the buckets
     idx_t curr = jbegin;
-    ppos[tid*2] = curr;
     for(idx_t j = jbegin; j < jend; j ++){
         if (j == 0){
             pos[0] = 0;
@@ -963,19 +960,23 @@ static void p_quicksort_bottom(
         curr ++;
     }
 
-    ppos[tid*2 + 1] = curr;
+    totals[tid] = curr - jbegin;
+
+    #pragma omp barrier
+
+    idx_t prefix = 0; 
+    for(idx_t i = 0; i < tid; i ++){
+        prefix += totals[i];
+    }
+
+    memcpy(&pos2[prefix], &pos[jbegin], sizeof(*pos2)*(totals[tid]));
+
   } /* omp parallel */
 
-    idx_t size = 0;
-    idx_t *pos2 = splatt_malloc((tt->nnz + 1) * sizeof(*pos2));
-
-    for(idx_t tid = 0; tid < splatt_omp_get_max_threads(); tid ++){
-        idx_t from_start = ppos[tid*2];
-        idx_t from_end = ppos[tid*2 + 1];
-        idx_t dist = from_end - from_start;
-        memcpy(&pos2[size], &pos[from_start], sizeof(*pos2)*(dist));
-        size += dist;
-    }
+  idx_t size = 0;
+  for(idx_t i = 0; i < splatt_omp_get_max_threads(); i ++){
+      size += totals[i];
+  }
 
     /* shift cmplt left one time, then do normal quicksort */
     for(int i = 0; i < bucket_size; i ++){
@@ -996,10 +997,8 @@ static void p_quicksort_bottom(
         cmplt[0] = saved;
     }
 
-
     splatt_free(pos);
     splatt_free(pos2);  
-    splatt_free(ppos);
     splatt_free(totals);
 }
 
@@ -1333,9 +1332,9 @@ static void p_bucket_counting_sort(
     for(idx_t i = 0; i < tt->nmodes + 1; ++i) {
         splatt_free(new_ind[i]);
     }
-    splatt_free(new_ind[tt->nmodes]);
-
     splatt_free(new_vals);
+
+    splatt_free(tt->ind[tt->nmodes]);
 
 
     splatt_free(histogram_array);
