@@ -1113,7 +1113,7 @@ static void p_counting_sort(
 * @param bucket_size The top 'bucket_size' modes in cmplt create buckets to sort within.
 * @param m The mode to be sorted on.
 */
-static void p_bucket_counting_sort(
+static void p_bucket_counting_sort_old(
     sptensor_t * const tt,
     idx_t * const cmplt,
     idx_t bucket_size,
@@ -1343,6 +1343,165 @@ static void p_bucket_counting_sort(
     splatt_free(totals);
 
 }
+
+/**
+* @brief Perform a single bucket counting sort pass.
+*
+* @param tt The tensor to sort.
+* @param cmplt Mode permutation used for defining tie-breaking order.
+* @param bucket_size The top 'bucket_size' modes in cmplt create buckets to sort within.
+* @param m The mode to be sorted on.
+*/
+static void p_bucket_counting_sort(
+    sptensor_t * const tt,
+    idx_t * const cmplt,
+    idx_t bucket_size,
+    idx_t m
+    )
+{
+    idx_t nslices = tt->dims[m];
+    idx_t * secret_ind = splatt_malloc(tt->nnz * sizeof(**tt->ind));
+    idx_t * new_ind[MAX_NMODES];
+    for(idx_t i = 0; i < tt->nmodes + 1; ++i) {
+        new_ind[i] = splatt_malloc(tt->nnz * sizeof(**new_ind));
+    }
+    val_t * new_vals = splatt_malloc(tt->nnz * sizeof(*new_vals));
+
+  #pragma omp parallel
+  {
+    int nthreads = splatt_omp_get_num_threads();
+    int tid = splatt_omp_get_thread_num();
+
+
+    idx_t * histogram = splatt_malloc((nslices + 1) * sizeof(*histogram));
+    memset(histogram, 0, nslices * sizeof(idx_t));
+
+
+    idx_t j_per_thread = (tt->nnz + nthreads - 1)/nthreads;
+    idx_t jbegin = SS_MIN(j_per_thread*tid, tt->nnz);
+    idx_t jend = SS_MIN(jbegin + j_per_thread, tt->nnz);
+
+    idx_t * histogram2 = splatt_malloc(j_per_thread * sizeof(*histogram2));
+    memset(histogram2, 0, j_per_thread * sizeof(idx_t));
+
+
+    idx_t curr = 0;
+    int start = -1;
+
+    // Save the buckets
+    for(idx_t j = jbegin; j < jend; j ++){
+        if (j == 0){
+            secret_ind[j] = curr;
+            histogram2[curr] = 1;
+            start = 0;
+            continue;
+        }
+
+        idx_t diff = 0;
+        for(idx_t idx = 0; idx < bucket_size; idx++) {
+            idx_t mi = cmplt[idx];
+            if(tt->ind[mi][j] != tt->ind[mi][j-1]){
+                diff ++;
+                break;
+            }
+        }
+        if(diff > 0){
+            if(start < 0){
+                start = j; // Start at the first new bucket
+            }else {
+                curr++;
+            }
+        }
+        if(start >= 0){
+            secret_ind[j] = curr;
+            histogram2[curr] = j + 1;
+        }
+    }
+
+    idx_t j = jend;
+    for(j = jend; j < tt->nnz; j++){
+        idx_t diff = 0;
+        for(idx_t idx = 0; idx < bucket_size; idx++) {
+            idx_t mi = cmplt[idx];
+            if(tt->ind[mi][j] != tt->ind[mi][j-1]){
+                diff ++;
+                break;
+            }
+        }
+        if(diff > 0){
+            break;        
+        }
+        secret_ind[j] = curr;
+        histogram2[curr] = j + 1;
+    }
+    idx_t end = j;
+
+    // Reassign.
+    jbegin = start;
+    jend = end;
+    if(start >= 0){
+        /* count */
+        for(idx_t j = jbegin; j < jend; ++j) {
+            idx_t idx = tt->ind[m][j];
+            ++histogram[idx];
+        }
+
+        /* prefix sum */
+        for(idx_t idx = 1; idx < nslices; ++idx) {
+            histogram[idx] += histogram[idx-1];
+        }
+
+        /* now copy values into new structures (but not the mode we are sorting */
+        for(idx_t j_off = 0; j_off < (jend-jbegin); ++j_off) {
+            /* we are actually going backwards */
+            idx_t const j = jend - j_off - 1;
+            idx_t idx = tt->ind[m][j];
+            --histogram[idx];
+
+            idx_t offset = histogram[idx] + jbegin;
+
+            new_vals[offset] = tt->vals[j];
+
+            for(idx_t mode=0; mode < tt->nmodes; ++mode) {
+                    new_ind[mode][offset] = tt->ind[mode][j];
+            }
+            new_ind[tt->nmodes][offset] = secret_ind[j];
+
+        }
+    }
+    #pragma omp barrier
+    if(start >= 0){
+
+        // Move back with histogram index.
+        m = tt->nmodes;
+
+        /* now copy values into new structures (but not the mode we are sorting */
+        for(idx_t j_off = 0; j_off < (jend-jbegin); ++j_off) {
+            /* we are actually going backwards */
+            idx_t const j = jend - j_off - 1;
+
+            idx_t idx = new_ind[m][j];
+            --histogram2[idx];
+
+            idx_t offset = histogram2[idx];
+
+            tt->vals[offset] = new_vals[j];
+            for(idx_t mode=0; mode < tt->nmodes; ++mode) {
+                tt->ind[mode][offset] = new_ind[mode][j];
+            }
+        }
+    }
+    splatt_free(histogram);
+    splatt_free(histogram2);
+  } /* omp parallel */  
+    for(idx_t i = 0; i < tt->nmodes + 1; ++i) {
+        splatt_free(new_ind[i]);
+    }
+    splatt_free(new_vals);
+
+    splatt_free(secret_ind);
+}
+
 
 
 /******************************************************************************
