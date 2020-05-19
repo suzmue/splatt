@@ -1443,7 +1443,6 @@ static void p_bucket_counting_sort(
     idx_t end = j;
 
     // Reassign.
-    #pragma omp barrier
     jbegin = start;
     jend = end;
 
