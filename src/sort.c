@@ -1371,8 +1371,9 @@ static void p_bucket_counting_sort(
     idx_t * histogram_array = splatt_malloc(
       ((nslices + 1)* splatt_omp_get_max_threads() + 1) * sizeof(*histogram_array));
 
+    // Need to allocate for an additional max_threads for imperfect balancing. 
     idx_t *histogram_array2 = splatt_malloc(
-      ((tt->nnz + 1)* splatt_omp_get_max_threads() + 1) * sizeof(*histogram_array2));
+      (tt->nnz + 2*splatt_omp_get_max_threads() + 1) * sizeof(*histogram_array2));
 
   #pragma omp parallel
   {
@@ -1388,6 +1389,8 @@ static void p_bucket_counting_sort(
     idx_t jbegin = SS_MIN(j_per_thread*tid, tt->nnz);
     idx_t jend = SS_MIN(jbegin + j_per_thread, tt->nnz);
 
+        idx_t * histogram2 = histogram_array2 + ((j_per_thread + 1) * tid);
+        memset(histogram2, 0, (j_per_thread + 1) * sizeof(idx_t));
 
 
     idx_t curr = 0;
@@ -1398,6 +1401,7 @@ static void p_bucket_counting_sort(
         if (j == 0){
             secret_ind[j] = curr;
             start = 0;  
+            histogram2[0] = 0;
             continue;
         }
 
@@ -1412,8 +1416,10 @@ static void p_bucket_counting_sort(
         if(diff > 0){
             if(start < 0){
                 start = j; // Start at the first new bucket
+                histogram2[curr] = j;
             }else {
                 curr++;
+                histogram2[curr] = j;
             }
         }
         if(start >= 0){
@@ -1439,6 +1445,7 @@ static void p_bucket_counting_sort(
             }
             secret_ind[j] = curr;
         }
+        histogram2[curr + 1] = j;
     }
     idx_t end = j;
 
@@ -1478,26 +1485,11 @@ static void p_bucket_counting_sort(
     if(start >= 0){
         // Move back with histogram index.
         m = tt->nmodes;
-        nslices = j_per_thread;
         
-        idx_t * histogram2 = histogram_array2 + ((nslices + 1) * tid);
-        memset(histogram2, 0, (nslices + 1) * sizeof(idx_t));
-
-
-        for(idx_t j = jbegin; j < jend; ++j) {
-            idx_t idx = new_ind[m][j];
-            ++histogram2[idx + 1];
-        }
-
-         /* prefix sum */
-        for(idx_t idx = 1; idx < (nslices + 1); ++idx) {
-            histogram2[idx] += histogram2[idx-1];
-        }
-
 
         for(idx_t j = jbegin; j < jend; ++j){
             idx_t idx = new_ind[m][j];
-            idx_t offset = histogram2[idx] + jbegin;
+            idx_t offset = histogram2[idx];
 
             tt->vals[offset] = new_vals[j];
             for(idx_t mode=0; mode < tt->nmodes; ++mode) {
